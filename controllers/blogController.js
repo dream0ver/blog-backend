@@ -69,7 +69,7 @@ const getPostsByCategory = async (req, res) => {
 const getPostById = async (req, res) => {
   const id = req.params.id
   try {
-    await pool.query("SELECT * from posts WHERE id = $1", [id])
+    const result = await pool.query("SELECT * from posts WHERE id = $1", [id])
     if (!result.rowCount)
       return createErrRes(res, err, "Post does not exist.", 404)
     res.status(200).json(result.rows[0])
