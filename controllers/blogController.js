@@ -59,7 +59,7 @@ const getPostsByCategory = async (req, res) => {
     ? "SELECT * from posts WHERE category = $1"
     : "SELECT * from  posts"
   try {
-    await pool.query(query, category ? [category] : [])
+    const result = await pool.query(query, category ? [category] : [])
     res.status(200).json(result.rows)
   } catch (err) {
     createErrRes(res, err, "Error occurred while fetching posts.")
