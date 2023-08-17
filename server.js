@@ -4,7 +4,7 @@ const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const authRoutes = require("./routes/authRoutes")
 const blogRoutes = require("./routes/blogRoutes")
-const corsOptions = require("./util/corsOptions")
+const { corsOptions } = require("./util/corsOptions")
 const PORT = process.env.PORT
 const app = express()
 app.use(cors(corsOptions))

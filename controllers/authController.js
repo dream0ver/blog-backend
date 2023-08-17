@@ -54,7 +54,12 @@ const loginUser = async (req, res) => {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000
       })
-      return res.status(200).json({ access_token })
+      return res.status(200).json({
+        access_token,
+        username,
+        roles: result.rows[0].roles,
+        id: result.rows[0].id
+      })
     }
   } catch (err) {
     createErrRes(res, err, "Error Occured While trying to Login.")
@@ -81,7 +86,12 @@ const generateAccessToken = async (req, res) => {
           expiresIn: "60s"
         }
       )
-      return res.status(200).json({ access_token })
+      return res.status(200).json({
+        access_token,
+        roles: result.rows[0].roles,
+        id: result.rows[0].id,
+        username: decoded.username
+      })
     })
   } catch (err) {
     createErrRes(res, err, "Error Occured while generating access token.")
@@ -93,11 +103,14 @@ const logout = async (req, res) => {
   if (!rt) return res.status(400).json({ message: "Unauthorized access." })
   try {
     const result = await pool.query(queries.getUserByRefreshToken, [rt])
-    if (!result.rowCount)
+    if (!result.rowCount) {
+      res.clearCookie("rt_cookie")
       return res.status(401).json({ message: "Unauthorized access." })
+    }
     jwt.verify(rt, process.env.REFRESH_SECRET, async (err, decoded) => {
       if (err) return createErrRes(res, err, "Refresh Token Expired.", 401)
       await pool.query(queries.updateRefreshToken, [null, decoded.username])
+      res.clearCookie("rt_cookie")
       return res.status(200).json({ message: "User successfully logged out." })
     })
   } catch (err) {
