@@ -46,7 +46,7 @@ const loginUser = async (req, res) => {
         { username, id: result.rows[0].id, roles: result.rows[0].roles },
         process.env.ACCESS_SECRET,
         {
-          expiresIn: "60s"
+          expiresIn: "10s"
         }
       )
       await pool.query(queries.updateRefreshToken, [refresh_token, username])
@@ -83,7 +83,7 @@ const generateAccessToken = async (req, res) => {
         },
         process.env.ACCESS_SECRET,
         {
-          expiresIn: "60s"
+          expiresIn: "10s"
         }
       )
       return res.status(200).json({

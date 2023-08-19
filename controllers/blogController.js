@@ -57,7 +57,7 @@ const getPostsByCategory = async (req, res) => {
   const category = req.query?.cat
   const query = category
     ? "SELECT * from posts WHERE category = $1"
-    : "SELECT * from  posts"
+    : "SELECT * from  posts ORDER BY id"
   try {
     const result = await pool.query(query, category ? [category] : [])
     res.status(200).json(result.rows)
@@ -93,9 +93,7 @@ const deletePost = async (req, res) => {
 
     if (hasPermission) {
       await pool.query("DELETE FROM posts WHERE id = $1", [id])
-      return res
-        .status(200)
-        .json({ message: `Post with ID:${id} successfully deleted.` })
+      return res.status(200).json({ message: `Post successfully deleted.` })
     } else {
       res
         .status(401)
