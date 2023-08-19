@@ -28,7 +28,7 @@ CREATE TABLE public.posts (
     id integer NOT NULL,
     user_id integer NOT NULL,
     title character varying(255) NOT NULL,
-    body character varying(1000) NOT NULL,
+    body text NOT NULL,
     image character varying(255),
     category character varying(10) NOT NULL
 );
