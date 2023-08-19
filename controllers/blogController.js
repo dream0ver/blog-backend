@@ -3,6 +3,11 @@ const queries = require("../util/queries")
 const ROLES = require("../util/roles")
 const createErrRes = require("../util/createErrRes")
 
+const uploadFile = (req, res) => {
+  const file = req.file
+  res.json({ message: "Image uploaded successfully.", url: file.filename })
+}
+
 const createPost = async (req, res) => {
   const { title, body, category, image } = req.body
   if (!title || !body || !category)
@@ -112,5 +117,6 @@ module.exports = {
   editPost,
   deletePost,
   getPostsByCategory,
-  getPostById
+  getPostById,
+  uploadFile
 }
