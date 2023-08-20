@@ -1,7 +1,6 @@
 const whitelist = [
   "http://localhost:3000",
-  "https://blog-backend-m9ci.onrender.com",
-  "https://soft-treacle-47e3b0.netlify.app"
+  "https://blog-frontend-inky.vercel.app/"
 ]
 const corsOptions = {
   origin: function (origin, callback) {
