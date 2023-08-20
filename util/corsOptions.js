@@ -1,6 +1,6 @@
 const whitelist = [
   "http://localhost:3000",
-  "https://blog-frontend-inky.vercel.app/"
+  "https://blog-frontend-inky.vercel.app"
 ]
 const corsOptions = {
   origin: function (origin, callback) {
