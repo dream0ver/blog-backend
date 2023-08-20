@@ -2,10 +2,30 @@ const pool = require("../util/db")
 const queries = require("../util/queries")
 const ROLES = require("../util/roles")
 const createErrRes = require("../util/createErrRes")
+const supabase = require("../util/supabase")
+const path = require("path")
 
 const uploadFile = (req, res) => {
   const file = req.file
-  res.json({ message: "Image uploaded successfully.", url: file.filename })
+
+  supabase.storage
+    .from(process.env.BUCKET)
+    .upload(`${Date.now()}${path.extname(file.originalname)}`, file.buffer, {
+      contentType: file.mimetype
+    })
+    .then(response => {
+      const { data } = supabase.storage
+        .from(process.env.BUCKET)
+        .getPublicUrl(response.data.path)
+
+      res.json({
+        message: "Image uploaded successfully.",
+        url: data.publicUrl
+      })
+    })
+    .catch(err => {
+      return createErrRes(res, err, "Error occured while uploading image.", 500)
+    })
 }
 
 const createPost = async (req, res) => {
