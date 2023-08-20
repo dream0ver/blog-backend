@@ -50,10 +50,15 @@ const loginUser = async (req, res) => {
         }
       )
       await pool.query(queries.updateRefreshToken, [refresh_token, username])
-      res.cookie("rt_cookie", refresh_token, {
+      const cookieConfig = {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000
-      })
+      }
+      if (process.env.ENVIRONMENT == "Production") {
+        cookieConfig.sameSite = "None"
+        cookieConfig.secure = true
+      }
+      res.cookie("rt_cookie", refresh_token, cookieConfig)
       return res.status(200).json({
         access_token,
         username,
