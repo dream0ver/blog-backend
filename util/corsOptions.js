@@ -1,4 +1,7 @@
-const whitelist = ["http://localhost:3000"]
+const whitelist = [
+  "http://localhost:3000",
+  "https://soft-treacle-47e3b0.netlify.app/"
+]
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
